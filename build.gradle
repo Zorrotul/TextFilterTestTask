@@ -1,0 +1,42 @@
+plugins {
+	id 'java'
+}
+
+group = 'cft.testTask'
+version = '1.0'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+jar {
+	manifest {
+		attributes(
+				"Main-Class": "cft.testTask.sortIt.SortItApplication"
+		)
+	}
+}
+
+dependencies {
+	testImplementation 'org.spockframework:spock-core:1.2-groovy-2.4'
+	testImplementation 'org.spockframework:spock-spring:1.2-groovy-2.4'
+	testImplementation 'org.codehaus.groovy:groovy-all:2.4.7'
+//	implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
+//	implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
+//	compileOnly 'org.projectlombok:lombok:1.18.20'
+//	annotationProcessor 'org.projectlombok:lombok'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
