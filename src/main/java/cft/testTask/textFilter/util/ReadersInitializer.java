@@ -1,6 +1,6 @@
-package cft.testTask.sortIt.util;
+package cft.testTask.textFilter.util;
 
-import cft.testTask.sortIt.config.Configuration;
+import cft.testTask.textFilter.config.Configuration;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,9 +1,6 @@
-package cft.testTask.sortIt.reader;
+package cft.testTask.textFilter.reader;
 
-import cft.testTask.sortIt.config.Configuration;
-
-import java.io.BufferedReader;
-import java.util.HashMap;
+import cft.testTask.textFilter.config.Configuration;
 
 public class ReaderManager {
 

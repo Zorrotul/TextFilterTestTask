@@ -1,11 +1,11 @@
-package cft.testTask.sortIt;
+package cft.testTask.textFilter;
 
-import cft.testTask.sortIt.config.Configuration;
-import cft.testTask.sortIt.handle.Handler;
+import cft.testTask.textFilter.config.Configuration;
+import cft.testTask.textFilter.handle.Handler;
 
 import java.io.IOException;
 
-public class SortItApplication {
+public class TextFilterApplication {
 
     public static void main(String[] args) throws IOException {
 
@@ -13,7 +13,7 @@ public class SortItApplication {
         Configuration configuration = new Configuration(args);
 
         Handler handler = new Handler(configuration);
-        handler.sort();
+
 
     }
 

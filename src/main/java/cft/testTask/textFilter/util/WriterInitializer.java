@@ -1,4 +1,4 @@
-package cft.testTask.sortIt.util;
+package cft.testTask.textFilter.util;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
