@@ -2,6 +2,9 @@ package cft.testTask.textFilter.counters;
 
 import cft.testTask.textFilter.config.StatisticMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StringCounters implements Counters {
 
     private Long amountOfStringElements = 0L;
@@ -14,9 +17,12 @@ public class StringCounters implements Counters {
     }
 
     public void incCounter(Object line) {
-        amountOfStringElements++;
-        maxStringLength = Math.max(maxStringLength, line.toString().length());
-        minStringLength = Math.min(minStringLength, line.toString().length());
+        String[] wordsFromLine = line.toString().split(" ");
+        for (String s:wordsFromLine) {
+            amountOfStringElements++;
+            maxStringLength = Math.max(maxStringLength, s.length());
+            minStringLength = Math.min(minStringLength, s.length());
+        }
     }
 
     public void printResult() {
