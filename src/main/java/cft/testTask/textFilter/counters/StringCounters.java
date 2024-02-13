@@ -18,7 +18,7 @@ public class StringCounters implements Counters {
 
     public void incCounter(Object line) {
         String[] wordsFromLine = line.toString().split(" ");
-        for (String s:wordsFromLine) {
+        for (String s : wordsFromLine) {
             amountOfStringElements++;
             maxStringLength = Math.max(maxStringLength, s.length());
             minStringLength = Math.min(minStringLength, s.length());
@@ -31,7 +31,7 @@ public class StringCounters implements Counters {
             if (statisticMode.equals(StatisticMode.FULL)) {
                 System.out.printf(
                         System.lineSeparator() + "Максимальная длина слова: %d" + System.lineSeparator() +
-                                "Минимальная длина слова: %d", maxStringLength, minStringLength);
+                                "Минимальная длина слова: %d" + System.lineSeparator(), maxStringLength, minStringLength);
             }
         }
     }

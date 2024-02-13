@@ -30,6 +30,7 @@ public class LongCounters implements Counters {
                                 "Минимальоне значение целых чисел: %d" + System.lineSeparator() +
                                 "Сумма всех целых чисел: %d" + System.lineSeparator() +
                                 "Среднее значение целых чисел: " + ((double) sumLong / (double) amountOfLongElements)
+                                + System.lineSeparator()
                         , maxLongValue, minLongValue, sumLong);
             }
         }

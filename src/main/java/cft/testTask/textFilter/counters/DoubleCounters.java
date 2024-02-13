@@ -29,7 +29,7 @@ public class DoubleCounters implements Counters {
                         System.lineSeparator() + "Максимальное значение вещественных чисел: %f" + System.lineSeparator() +
                                 "Минимальоне значение вещественных чисел: %f" + System.lineSeparator() +
                                 "Сумма всех вещественных чисел: %f" + System.lineSeparator() +
-                                "Среднее значение вещественных чисел: " + (sumDouble / amountOfDoubleElements), maxDoubleValue, minDoubleValue, sumDouble);
+                                "Среднее значение вещественных чисел: " + (sumDouble / amountOfDoubleElements) + System.lineSeparator(), maxDoubleValue, minDoubleValue, sumDouble);
             }
         }
     }
