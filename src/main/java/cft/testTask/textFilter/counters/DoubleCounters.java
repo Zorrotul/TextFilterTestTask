@@ -1,10 +1,18 @@
 package cft.testTask.textFilter.counters;
 
+import cft.testTask.textFilter.config.StatisticMode;
+
 public class DoubleCounters implements Counters {
-    private Long amountOfDoubleElements = 0l;
+
+    private final StatisticMode statisticMode;
+    private Long amountOfDoubleElements = 0L;
     private Double maxDoubleValue = 0.0;
     private Double minDoubleValue = Double.MAX_VALUE;
     private Double sumDouble = 0.0;
+
+    public DoubleCounters(StatisticMode statisticMode) {
+        this.statisticMode = statisticMode;
+    }
 
     public void incCounter(Object line) {
         amountOfDoubleElements++;
@@ -15,13 +23,14 @@ public class DoubleCounters implements Counters {
 
     public void printResult() {
         if (amountOfDoubleElements > 0) {
-            System.out.println(String.format("Количество вещественных чисел: %d\n" +
-                    "Максимальное значение вещественных чисел: %f\n" +
-                    "Минимальоне значение вещественных чисел: %f\n" +
-                    "Сумма всех вещественных чисел: %f\n" +
-                    "Среднее значение вещественных чисел: " + (sumDouble / amountOfDoubleElements), amountOfDoubleElements, maxDoubleValue, minDoubleValue, sumDouble));
+            System.out.printf("Количество вещественных чисел: %d", amountOfDoubleElements);
+            if (statisticMode.equals(StatisticMode.FULL)) {
+                System.out.printf(
+                        System.lineSeparator() + "Максимальное значение вещественных чисел: %f" + System.lineSeparator() +
+                                "Минимальоне значение вещественных чисел: %f" + System.lineSeparator() +
+                                "Сумма всех вещественных чисел: %f" + System.lineSeparator() +
+                                "Среднее значение вещественных чисел: " + (sumDouble / amountOfDoubleElements), maxDoubleValue, minDoubleValue, sumDouble);
+            }
         }
     }
 }
-
-

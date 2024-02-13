@@ -22,7 +22,7 @@ repositories {
 jar {
 	manifest {
 		attributes(
-				"Main-Class": "cft.testTask.sortIt.SortItApplication"
+				"Main-Class": "cft.testTask.textFilter.TextFilterApplication"
 		)
 	}
 }
@@ -31,10 +31,6 @@ dependencies {
 	testImplementation 'org.spockframework:spock-core:1.2-groovy-2.4'
 	testImplementation 'org.spockframework:spock-spring:1.2-groovy-2.4'
 	testImplementation 'org.codehaus.groovy:groovy-all:3.0.16'
-//	implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
-//	implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
-//	compileOnly 'org.projectlombok:lombok:1.18.20'
-//	annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {

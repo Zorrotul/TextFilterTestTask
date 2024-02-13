@@ -1,10 +1,17 @@
 package cft.testTask.textFilter.counters;
 
+import cft.testTask.textFilter.config.StatisticMode;
+
 public class StringCounters implements Counters {
-    private Long amountOfStringElements = 0l;
+
+    private Long amountOfStringElements = 0L;
     private int maxStringLength;
     private int minStringLength = 37; //длинна самого длинного слова. Похорошему нужно было бы написать Integer.MAX_VALUE
+    private final StatisticMode statisticMode;
 
+    public StringCounters(StatisticMode statisticMode) {
+        this.statisticMode = statisticMode;
+    }
 
     public void incCounter(Object line) {
         amountOfStringElements++;
@@ -14,11 +21,12 @@ public class StringCounters implements Counters {
 
     public void printResult() {
         if (amountOfStringElements > 0) {
-            System.out.println(String.format("Количество символьных элементов: %d \n" +
-                    "Максимальная длина слова: %d \n" +
-                    "Минимальная длина слова: %d", amountOfStringElements, maxStringLength, minStringLength));
+            System.out.printf("Количество символьных элементов: %d", amountOfStringElements);
+            if (statisticMode.equals(StatisticMode.FULL)) {
+                System.out.printf(
+                        System.lineSeparator() + "Максимальная длина слова: %d" + System.lineSeparator() +
+                                "Минимальная длина слова: %d", maxStringLength, minStringLength);
+            }
         }
     }
 }
-
-

@@ -1,62 +1,85 @@
 package cft.testTask.textFilter.config;
 
+import cft.testTask.textFilter.error.ConfigurationException;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import static java.util.stream.Collectors.toList;
 
 public class Configuration {
 
-    private final StatisticMode statisticMode;// TODO: ридумать как сделать переменные final
-    private final String filePath;
-    private final String filePrefix;
+    public static final List<Character> prohibitedValues = List.of('/', '*', ':', '\\', '?', '|');
+    private final StatisticMode statisticMode;
+    private final String outputFilePath;
+    private final String outputFilePrefix;
     private final List<String> inputFileNames = new ArrayList<>();
-    private boolean addToExistFiles;
-    AtomicInteger i;
-
+    private final boolean addToExistFiles;
 
     public Configuration(String[] args) {
         StatisticMode statisticMode = StatisticMode.SHORT;
-        String filePath = "";
-        String filePrefix = "";
-        int indexOfFilenames = 0;
+        String outputFilePath = "";
+        String outputFilePrefix = "";
+        int startIndexOfInputFilenames = 0;
         boolean addToExistFiles = false;
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-f")) {
                 statisticMode = StatisticMode.FULL;
-                indexOfFilenames++;
+                startIndexOfInputFilenames++;
             } else if (args[i].equals("-s")) {
-                indexOfFilenames++;
+                startIndexOfInputFilenames++;
             }
             if (args[i].equals("-o")) {
-                indexOfFilenames += 2;
-                filePath = args[i + 1];
+                outputFilePath = args[i + 1];
+                startIndexOfInputFilenames += 2;
             }
             if (args[i].equals("-p")) {
-                indexOfFilenames += 2;
-                filePrefix = args[i + 1];
+                outputFilePrefix = Optional.of(args[i + 1])
+                        .filter(prefix -> prefix.chars().anyMatch(letter -> prohibitedValues.contains((char) letter)))
+                        .map(prefix -> {
+                            System.out.println("В префиксе " + prefix + " не должно содержаться данных символов: / * : \\ ? |");
+                            for (char p : prohibitedValues) {
+                                prefix = prefix.replace(String.valueOf(p), "");
+                            }
+                            System.out.println("Префикс файлов стал: " + prefix);
+                            return prefix;
+                        })
+                        .orElse(args[i + 1]);
+
+                startIndexOfInputFilenames += 2;
             }
             if (args[i].equals("-a")) {
-                indexOfFilenames++;
                 addToExistFiles = true;
+                startIndexOfInputFilenames++;
             }
         }
 
         this.statisticMode = statisticMode;
-        this.filePath = filePath;
-        this.filePrefix = filePrefix;
+        this.outputFilePath = outputFilePath;
+        this.outputFilePrefix = outputFilePrefix;
         this.addToExistFiles = addToExistFiles;
 
-        for (int i = indexOfFilenames; i < args.length; i++) {
-            inputFileNames.add(args[i]);
+        for (int i = startIndexOfInputFilenames; i < args.length; i++) {
+            fileNameValidator(args[i]);
         }
+
+        Optional.of(inputFileNames)
+                .filter(List::isEmpty)
+                .ifPresent(i -> {
+                    String errorMessage = String.format("There is no input files in entered args=[%s]", Arrays.toString(args));
+                    throw new ConfigurationException(errorMessage);
+                });
     }
 
     public void printConfig() {
-        System.out.println("StatisticMode: " + statisticMode + "\n"
-                + "добавочный путь: " + filePath + "\n"
-                + "Префик файлов: " + filePrefix + "\n"
-                + "Входящие файлы: " + inputFileNames.toString() + "\n"
+        System.out.println("StatisticMode: " + statisticMode + System.lineSeparator()
+                + "добавочный путь: " + outputFilePath + System.lineSeparator()
+                + "Префикс файлов: " + outputFilePrefix + System.lineSeparator()
+                + "Входящие файлы: " + inputFileNames + System.lineSeparator()
                 + "Перезатирать ли файлы: " + addToExistFiles);
     }
 
@@ -64,40 +87,31 @@ public class Configuration {
         return inputFileNames;
     }
 
-    public StatisticMode getstatisticMode() {
+    public String getOutputFilePath() {
+        return outputFilePath;
+    }
+
+    public String getOutputFilePrefix() {
+        return outputFilePrefix;
+    }
+
+    public StatisticMode getStatisticMode() {
         return statisticMode;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public StatisticMode getSortMode() {
-        return statisticMode;
-    }
-
-    public String getFilePrefix() {
-        return filePrefix;
     }
 
     public boolean getAddToExistFiles() {
         return addToExistFiles;
     }
 
-//    private StatisticMode extractStatisticMode(String[] args) {
-//        StatisticMode statisticMode = StatisticMode.SHORT;
-//
-//
-//        for (String arg : args) {
-//            if (arg.equals("-f")) {
-//                statisticMode = StatisticMode.FULL;
-//                break;
-//            }
-//        }
-//
-//
-//        return statisticMode;
-//    }
+    private void fileNameValidator(String name) {
+        Optional.of(name)
+                .filter(fileName -> fileName.chars().noneMatch(letter -> prohibitedValues.contains((char) letter)))
+                .ifPresentOrElse(inputFileNames::add, () -> {
+                    System.out.println("Error: В имени файла (" + name
+                            + ") не должно содержаться данных символов: / * : \\ ? |"
+                            + System.lineSeparator() + "Данный файл не будет обработан");
 
+                });
+    }
 
 }
